@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Выбор даты Центра оценки</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <img src="FT20LOGO@4x.png" width="100"><br>
+  <h2>Выбор подходящей даты Центра оценки</h2>
+  <form id="co-form">
+    <label>Дата</label>
+    <select name="chosen_date" required id="chosen_date">
+      <option value="">- выбрать -</option>
+      <option value="1">-</option>
+      <option value="2">-</option>
+      <option value="3">-</option>
+      <option value="4">-</option>
+    </select>
+
+    <button type="submit">ОТПРАВИТЬ</button>
+  </form>
+  <p id="reg-error" style="color: red;"></p>
+
+  <script src="script.js"></script>
+</body>
+</html>

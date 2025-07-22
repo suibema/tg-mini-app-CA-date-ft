@@ -1,0 +1,134 @@
+const form = document.getElementById('co-form');
+
+function getTelegramUserId() {
+  if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
+    const user = Telegram.WebApp.initDataUnsafe.user;
+    if (user && user.id) {
+      return user.id;
+    }
+  }
+  return null;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  Telegram.WebApp.ready();
+  const id = getTelegramUserId();
+  const startParam = Telegram.WebApp.initDataUnsafe?.start_param;
+  window.tgUserId = id;
+  window.tgUserStartParam = startParam;
+});
+
+async function updateSelectOptions() {
+  const select = document.getElementById('chosen_date');
+
+  try {
+    const response = await fetch('https://ndb.fut.ru/api/v2/tables/msld4818olw3gxi/records', {
+      headers: {
+        'accept': 'application/json',
+        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+      }
+    });
+
+    const data = await response.json();
+
+    // Пример структуры: [{ id: 1, date: "25 июля в 16:00" }, ...]
+    data.list.forEach(item => {
+      const option = select.querySelector(`option[value="${item.number}"]`);
+      if (option) {
+        option.textContent = item.time;
+      }
+    });
+
+  } catch (error) {
+    console.error('Ошибка при загрузке данных из NocoDB:', error);
+  }
+}
+
+updateSelectOptions();
+
+form.addEventListener('submit', async function (e) {
+  const formData = new FormData(form);
+  const errorEl = document.getElementById('reg-error');
+  e.preventDefault();
+
+  const submitBtn = this.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'ОТПРАВЛЯЕТСЯ...'
+  setTimeout(() => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'ОТПРАВИТЬ'
+  }, 5000);
+  
+  try {
+    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/m5rqqcrb6olwr0q/records/count?where=(telegram_id,eq,${window.tgUserId})`, {
+      method: 'GET',
+      headers: {
+        'accept': 'application/json',
+        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+      }
+    });
+
+    const tg_count = await res.json();
+    
+    if (tg_count.count > 0) {
+      errorEl.textContent = 'Ты уже выбрал дату. Свяжись с нами через бота, если это не так или если ты хочешь изменить данные';
+      return;
+    }
+  }
+  catch (err) {
+    console.error(err);
+    errorEl.textContent = 'Ошибка сервера. Повтори попытку позже';
+    }
+
+  try {
+    const response = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records/?where=(tg-id,eq,${window.tgUserId})`, {
+      method: 'GET',
+      headers: {
+        'accept': 'application/json',
+        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+      }
+    });
+
+    const candidate_data = await response.json();
+    
+    window.email = candidate_data.list[0]['E-mail']
+    window.name = candidate_data.list[0]['Имя']
+    window.surname = candidate_data.list[0]['Фамилия']
+
+  }
+  catch (err) {
+    console.error(err);
+    errorEl.textContent = 'Ошибка сервера. Повтори попытку позже';
+    }
+    
+  
+  try {
+    const res = await fetch('https://ndb.fut.ru/api/v2/tables/m5rqqcrb6olwr0q/records', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+      },
+      body: JSON.stringify({
+        "chosen_option": document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent,
+        "telegram_id": window.tgUserId,
+        "email": window.email,
+        "name": window.name,
+        "surname": window.surname,
+        "request_date": new Date().toLocaleDateString('ru-RU'),
+        "request_time": new Date().toLocaleTimeString('ru-RU', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        }) 
+      })
+    }
+    )
+    window.location.href = 'bye.html'
+  }
+  catch (err) {
+    console.error(err);
+    errorEl.textContent = 'Ошибка сервера. Повтори попытку позже';
+    }
+});
