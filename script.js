@@ -1,4 +1,4 @@
-const form = document.getElementById('co-form');
+const form = document.getElementById('co-form')
 
 function getTelegramUserId() {
   if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
@@ -31,7 +31,6 @@ async function updateSelectOptions() {
 
     const data = await response.json();
 
-    // Пример структуры: [{ id: 1, date: "25 июля в 16:00" }, ...]
     data.list.forEach(item => {
       const option = select.querySelector(`option[value="${item.number}"]`);
       if (option) {
@@ -90,7 +89,12 @@ form.addEventListener('submit', async function (e) {
     });
 
     const candidate_data = await response.json();
-    
+
+    if (!candidate_data.list || candidate_data.list.length === 0) {
+      errorEl.textContent = 'Не нашли тебя в базе регистрации! Пожалуйста, свяжись с нами в боте или повтори попытку ещё раз';
+      return;
+    }
+    window.record_id = candidate_data.list[0]['Id']
     window.email = candidate_data.list[0]['E-mail']
     window.name = candidate_data.list[0]['Имя']
     window.surname = candidate_data.list[0]['Фамилия']
@@ -122,6 +126,20 @@ form.addEventListener('submit', async function (e) {
           minute: '2-digit',
           hour12: false
         }) 
+      })
+    }
+    )
+
+    const res2 = await fetch('https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+      },
+      body: JSON.stringify({
+        "Id": window.record_id,
+        "Выбор даты ЦО": document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
       })
     }
     )
