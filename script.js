@@ -10,7 +10,7 @@ function getTelegramUserId() {
   return null;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
   Telegram.WebApp.ready();
   const id = getTelegramUserId();
   const startParam = Telegram.WebApp.initDataUnsafe?.start_param;
@@ -53,32 +53,15 @@ form.addEventListener('submit', async function (e) {
   const submitBtn = this.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
   submitBtn.textContent = 'ОТПРАВЛЯЕТСЯ...'
+  submitBtn.style.backgroundColor = '#ccc';
+  submitBtn.style.color = '#666';
   setTimeout(() => {
     submitBtn.disabled = false;
     submitBtn.textContent = 'ОТПРАВИТЬ'
-  }, 5000);
+    submitBtn.style.backgroundColor = '';
+    submitBtn.style.color = '';
+  }, 9000);
   
-  try {
-    const res = await fetch(`https://ndb.fut.ru/api/v2/tables/m5rqqcrb6olwr0q/records/count?where=(telegram_id,eq,${window.tgUserId})`, {
-      method: 'GET',
-      headers: {
-        'accept': 'application/json',
-        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
-      }
-    });
-
-    const tg_count = await res.json();
-    
-    if (tg_count.count > 0) {
-      errorEl.textContent = 'Ты уже выбрал дату. Свяжись с нами через бота, если это не так или если ты хочешь изменить данные';
-      return;
-    }
-  }
-  catch (err) {
-    console.error(err);
-    errorEl.textContent = 'Ошибка сервера. Повтори попытку позже';
-    }
-
   try {
     const response = await fetch(`https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records/?where=(tg-id,eq,${window.tgUserId})`, {
       method: 'GET',
@@ -91,7 +74,7 @@ form.addEventListener('submit', async function (e) {
     const candidate_data = await response.json();
 
     if (!candidate_data.list || candidate_data.list.length === 0) {
-      errorEl.textContent = 'Не нашли тебя в базе регистрации! Пожалуйста, свяжись с нами в боте или повтори попытку ещё раз';
+      errorEl.textContent = 'Не нашли тебя в базе регистрации! Пожалуйста, свяжись с нами через бота или повтори попытку ещё раз';
       return;
     }
     window.record_id = candidate_data.list[0]['Id']
@@ -129,7 +112,7 @@ form.addEventListener('submit', async function (e) {
       })
     }
     )
-
+    if (window.tgUserStartParam == 'first_choice') {
     const res2 = await fetch('https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records', {
       method: 'PATCH',
       headers: {
@@ -139,10 +122,39 @@ form.addEventListener('submit', async function (e) {
       },
       body: JSON.stringify({
         "Id": window.record_id,
-        "Выбор даты ЦО": document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
+        cd24ymeg17efph2: document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
       })
     }
     )
+  } else if (window.tgUserStartParam == 'second_choice') {
+    const res2 = await fetch('https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+      },
+      body: JSON.stringify({
+        "Id": window.record_id,
+        ccbhkw1b8wrncal: document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
+      })
+    }
+    )
+  } else if (window.tgUserStartParam == 'third_choice') {
+    const res2 = await fetch('https://ndb.fut.ru/api/v2/tables/maiff22q0tefj6t/records', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+        'xc-token': 'crDte8gB-CSZzNujzSsy9obQRqZYkY3SNp8wre88'
+      },
+      body: JSON.stringify({
+        "Id": window.record_id,
+        cz17jhzpscw313c: document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
+      })
+    }
+    )
+  }
     window.location.href = 'bye.html'
   }
   catch (err) {
