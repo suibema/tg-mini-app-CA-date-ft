@@ -108,7 +108,8 @@ form.addEventListener('submit', async function (e) {
           hour: '2-digit',
           minute: '2-digit',
           hour12: false
-        }) 
+        }),
+        "Смена даты": window.tgUserStartParam
       })
     }
     )
