@@ -123,7 +123,7 @@ form.addEventListener('submit', async function (e) {
       },
       body: JSON.stringify({
         "Id": window.record_id,
-        cd24ymeg17efph2: document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
+        co514qtz5lacdzn: document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
       })
     }
     )
@@ -137,7 +137,7 @@ form.addEventListener('submit', async function (e) {
       },
       body: JSON.stringify({
         "Id": window.record_id,
-        ccbhkw1b8wrncal: document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
+        cnsooufndv6ro8q: document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
       })
     }
     )
@@ -151,7 +151,7 @@ form.addEventListener('submit', async function (e) {
       },
       body: JSON.stringify({
         "Id": window.record_id,
-        cz17jhzpscw313c: document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
+        c64xzr9c289gwkc: document.querySelector('select[name="chosen_date"]').querySelector(`option[value="${formData.get('chosen_date')}"]`)?.textContent
       })
     }
     )
@@ -163,3 +163,4 @@ form.addEventListener('submit', async function (e) {
     errorEl.textContent = 'Ошибка сервера. Повтори попытку позже';
     }
 });
+
