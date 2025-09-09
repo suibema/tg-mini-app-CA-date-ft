@@ -1,29 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Выбор даты Центра оценки</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Выбор даты интервью</title>
+
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <script type="module" src="script.js"></script>
 </head>
 <body>
-  <img src="FT20LOGO@4x.png" width="100"><br>
-  <h2 style="text-align: center;">Тебе нужно выбрать дату и время для прохождения Центра оценки! Выбери удобный вариант ⬇️</h2>
-  <form id="co-form">
-    <label>Дата</label>
-    <select name="chosen_date" required id="chosen_date">
-      <option value="">- выбрать -</option>
-      <option value="1">-</option>
-      <option value="2">-</option>
-      <option value="3">-</option>
-      <option value="4">-</option>
-    </select>
+  <div class="card">
+    <img src="FT20LOGO@4x.png" width="96" alt="logo" />
+    <h2>Выбери удобную дату и время (мск) Центра оценки</h2>
 
-    <button type="submit">ОТПРАВИТЬ</button>
-  </form>
-  <p id="reg-error" style="color: red;"></p>
+    <!-- Текущая запись -->
+    <div id="currentBox" class="current" style="display:none;">
+      <div class="row">
+        <div class="muted">Твоя текущая запись:</div>
+        <div id="currentText" style="margin-top:4px;font-weight:600;"></div>
+      </div>
+      <div class="row">
+        <button id="rebookBtn" type="button">Изменить дату</button>
+      </div>
+    </div>
 
-  <script src="script.js"></script>
+    <!-- Выбор даты -->
+    <div id="selectBox" style="display:none;">
+      <div class="row">
+        <label for="slotSelect">Дата и время</label>
+        <select id="slotSelect" required>
+          <option value="">Загрузка доступных слотов…</option>
+        </select>
+      </div>
+      <div class="row">
+        <button id="submitBtn" type="button">Записаться</button>
+      </div>
+    </div>
+
+    <p id="msg" class="muted"></p>
+  </div>
 </body>
 </html>
