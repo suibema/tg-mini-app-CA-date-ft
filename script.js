@@ -51,7 +51,8 @@ const selectBox = document.getElementById("selectBox");
 
 Telegram.WebApp.ready();
 const tgUser = Telegram.WebApp?.initDataUnsafe?.user || null;
-const tgId = "id"; // Hardcoded for testing
+const id = getTelegramUserId()
+const tgId = id;
 
 function fmt(tsLike) {
   const d = new Date(tsLike);
@@ -331,3 +332,4 @@ async function initUI() {
 submitBtn.addEventListener("click", bookSelected);
 
 initUI();
+
