@@ -1,19 +1,19 @@
 const TZ = "Europe/Moscow";
 
-const TBL_DATES = "m60n1xw5ca838ww";  
+const TBL_DATES = "mmu7igdjxzqqnyn";  
 const COL_DATE_ID = "Id";             
 const COL_DATE_TEXT = "Дата";       
-const COL_DATE_COUNT = "ctcb6airzyxpc1z";   
+const COL_DATE_COUNT = "cm5snabyhx83qwi";   
 
-const TBL_REG = "moqj9txmglwy87u";
+const TBL_REG = "m6tyxd3346dlhco";
 const COL_REG_TGID = "tg-id";
-const COL_REG_DATE_ID = "ckdjzf4b3zcob72";   
-const COL_REG_DATE_TEXT = "cmieby5rtwr3u20";
+const COL_REG_DATE_ID = "c65z41obxvijk13";   
+const COL_REG_DATE_TEXT = "crrdl69rs6780r8";
 
-const TBL_LOG = "mwss4su9ytdjlln";
+const TBL_LOG = "mnms3mtybbvea9i";
 const COL_LOG_TGID = "tg-id";
-const COL_LOG_TYPE = "cxycz4oxpv3yxf7";
-const COL_LOG_SLOT_DATE = "c737rnaz0h5ks4k";
+const COL_LOG_TYPE = "cctttk5jutn5ww2";
+const COL_LOG_SLOT_DATE = "c4voznhftjxzvih";
 
 const USE_SQL_FUNCTIONS = false;
 
@@ -331,5 +331,6 @@ async function initUI() {
 submitBtn.addEventListener("click", bookSelected);
 
 initUI();
+
 
 
