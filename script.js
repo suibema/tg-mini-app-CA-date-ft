@@ -3,7 +3,7 @@ const TZ = "Europe/Moscow";
 const TBL_DATES = "mmu7igdjxzqqnyn";  
 const COL_DATE_ID = "Id";             
 const COL_DATE_TEXT = "Дата";       
-const COL_DATE_COUNT = "cm5snabyhx83qwi";   
+const COL_DATE_COUNT = "cqq1htuyfk488ah";   
 
 const TBL_REG = "m6tyxd3346dlhco";
 const COL_REG_TGID = "tg-id";
@@ -331,6 +331,7 @@ async function initUI() {
 submitBtn.addEventListener("click", bookSelected);
 
 initUI();
+
 
 
 
